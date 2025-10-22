@@ -79,6 +79,7 @@ def run_all_tests():
         for f in failed:
             print(f["file"]+"\n"+f["output"])
             # print(f)
+        sys.exit(1)
 
 
 # Runs a test with a given ID
