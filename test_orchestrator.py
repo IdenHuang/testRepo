@@ -77,8 +77,7 @@ def run_all_tests():
     if (len(failed) != 0):
         print("\n===== FAILED TESTS =====")
         for f in failed:
-            print(f["file"]+"\n"+f["output"])
-            # print(f)
+            print(f["file"]+"\n"+f["error"])
         sys.exit(1)
 
 
