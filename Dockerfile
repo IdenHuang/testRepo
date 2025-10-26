@@ -1,5 +1,7 @@
 FROM jenkins/jenkins:2.528.1-jdk21
 USER root
+RUN apt-get update && apt-get install -y python3 python3-full python3-pip
+RUN apt-get update && apt-get install -y python python-pip
 RUN apt-get update && apt-get install -y lsb-release
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
