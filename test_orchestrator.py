@@ -12,35 +12,37 @@ args = parser.parse_args()
 
 # Identifies all tests within the ./tests/.. folder
 def discover_test(test_dir="tests"):
-    tests = []
+    tests = {}
     for file in sorted(os.listdir(test_dir)):
-        if file.endswith(".py") and file.startswith("test"):
-            tests.append(f"{test_dir}/{file}")
+        parsed = file.split('_')
+        testid = parsed[2].split('.')[0]
+        if parsed[0] == "test" and testid.isdigit():
+            tests[testid] = f"{test_dir}/{file}"
     return tests
 
 tests = discover_test()
 
 # Runs a singular test 
-def run_test(test_file):
-    if not(test_file in tests): 
+def run_test(test_id):
+    if not(test_id in tests.keys()): 
         print("Test was not found")
         return
     
-    print(f"\nRunning {test_file} ... \n")
+    print(f"\nRunning {tests[test_id]} ... \n")
     start = time.time()
 
     try:
         result = subprocess.run(
-            ["python3", f"{test_file}"],
+            ["python3", f"{tests[test_id]}"],
             capture_output=True,
             text=True,
             check=True
         )
         duration = time.time() - start
-        print(f"Test passed  -- {test_file}\nReturn Code: {result.returncode} \nDuration: {round(duration, 2)} seconds")
+        print(f"Test passed  -- {test_id}\nReturn Code: {result.returncode} \nDuration: {round(duration, 2)} seconds")
 
         return {
-            "file": test_file,
+            "id": test_id,
             "passed": result.returncode,
             "duration": round(duration, 2),
             "output": result.stdout.strip(),
@@ -48,9 +50,9 @@ def run_test(test_file):
         }
     except subprocess.CalledProcessError as e:
         duration = time.time() - start
-        print(f"Test failed -- {test_file}\nReturn Code: 1 \nDuration: {round(duration, 2)} seconds \n {e.stdout}" )
+        print(f"Test failed -- {test_id}\nReturn Code: 1 \nDuration: {round(duration, 2)} seconds \n {e.stdout}" )
         return {
-        "file": test_file,
+        "id": test_id,
         "passed": 1,
         "duration": round(duration, 2),
         "output": e.stdout,
@@ -63,10 +65,8 @@ def run_all_tests():
     print(f"Discovered {len(tests)} testfiles. \n")
 
     results = []
-
-    print(tests)
     
-    for t in tests:
+    for t in tests.keys():
         result = run_test(t)
         results.append(result)
 
@@ -81,16 +81,18 @@ def run_all_tests():
     if (len(failed) != 0):
         print("\n===== FAILED TESTS =====")
         for f in failed:
-            print(f["file"]+"\n"+f["output"])
-
+            print("Test ID "+f["id"]+"\n"+f["error"])
+        print("FAILURE")
 
 # Runs a test with a given ID
 def run_test_by_id(test_id):
-    tests = discover_test()
-
-    for t in test:
-        if f"{test_id}" in t:
-            return run_test(t)
+    tests = discover_test()    
+    for t in tests.keys():
+        if int(test_id) == int(t):
+            result = run_test(t)
+            if result["passed"]:
+                print(result["error"])
+            return
 
     print(f"No test found with test ID {test_id}")
 
@@ -98,7 +100,7 @@ def main():
     if args.regression:
         run_all_tests()
     elif args.test_id:
-        run_test(f"tests/{args.test_id}")
+        run_test_by_id(args.test_id)
     elif args.list_tests:
         print(f"Discovered {len(tests)} testfiles. {tests}")
     else:
