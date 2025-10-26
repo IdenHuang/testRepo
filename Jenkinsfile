@@ -19,6 +19,7 @@ pipeline {
                     if (result) {
                         error ()
                     }
+                }
             }
         }
     }
