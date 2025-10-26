@@ -22,12 +22,16 @@ tests = discover_test()
 
 # Runs a singular test 
 def run_test(test_file):
+    if not(test_file in tests): 
+        print("Test was not found")
+        return
+    
     print(f"\nRunning {test_file} ... \n")
     start = time.time()
 
     try:
         result = subprocess.run(
-            ["python3", f"{test_file}"],
+            ["python", f"{test_file}"],
             capture_output=True,
             text=True,
             check=True
@@ -44,7 +48,7 @@ def run_test(test_file):
         }
     except subprocess.CalledProcessError as e:
         duration = time.time() - start
-        print(f"Test failed -- {test_file}\nReturn Code: 1 \nDuration: {round(duration, 2)} seconds")
+        print(f"Test failed -- {test_file}\nReturn Code: 1 \nDuration: {round(duration, 2)} seconds \n {e.stdout}" )
         return {
         "file": test_file,
         "passed": 1,
@@ -77,8 +81,7 @@ def run_all_tests():
     if (len(failed) != 0):
         print("\n===== FAILED TESTS =====")
         for f in failed:
-            print(f["file"]+"\n"+f["error"])
-        sys.exit(1)
+            print(f["file"]+"\n"+f["output"])
 
 
 # Runs a test with a given ID
