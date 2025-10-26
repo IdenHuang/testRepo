@@ -11,6 +11,17 @@ pipeline {
                 sh "${env.PYTHON} test_orchestrator.py --regression"
             }
         }
+        stage('Results') {
+            steps {
+                script {
+                    def log = currentBuild.rawBuild.getLog()
+                    def result = log.find { it.contains('FAILURE')}
+                }
+                if (result) {
+                    error ()
+                }
+            }
+        }
     }
 
     post {
