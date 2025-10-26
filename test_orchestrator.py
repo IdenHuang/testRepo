@@ -31,7 +31,7 @@ def run_test(test_file):
 
     try:
         result = subprocess.run(
-            ["python", f"{test_file}"],
+            ["python3", f"{test_file}"],
             capture_output=True,
             text=True,
             check=True
@@ -82,7 +82,7 @@ def run_all_tests():
         print("\n===== FAILED TESTS =====")
         for f in failed:
             print(f["file"]+"\n"+f["output"])
-            raise 
+            raise
 
 
 # Runs a test with a given ID

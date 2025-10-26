@@ -16,10 +16,9 @@ pipeline {
                 script {
                     def log = currentBuild.rawBuild.getLog()
                     def result = log.find { it.contains('FAILURE')}
-                }
-                if (result) {
-                    error ()
-                }
+                    if (result) {
+                        error ()
+                    }
             }
         }
     }
