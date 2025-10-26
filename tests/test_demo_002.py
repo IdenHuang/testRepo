@@ -1,6 +1,4 @@
-import pytest
-import sys
-import subprocess
+
 
 def test_answer():
     print("test 2")
