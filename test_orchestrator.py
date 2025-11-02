@@ -83,6 +83,7 @@ def run_all_tests():
         for f in failed:
             print("Test ID "+f["id"]+"\n"+f["error"])
         print("FAILURE")
+        exit(1)
 
 # Runs a test with a given ID
 def run_test_by_id(test_id):

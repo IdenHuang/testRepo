@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    // parameters {
+    //     string(name: 'BRANCH_ID', defaultValue: '', description: 'Enter branch ID')
+    // }
+
+    // stages {
+        stage('Checkout') {
+            // steps {
+            //     git branch: '${BRANCH_ID}', url: 'https://github.com/IdenHuang/testRepo.git'
+            // }
+            steps {
+                git url: 'https://github.com/IdenHuang/testRepo.git'
+            }
+        }
+        stage('Run Test') {
+            steps {
+                sh "python3 test_orchestrator.py --regression"
+            }
+        }
+        
+        stage('Check console output') {
+            steps {
+                script {
+                    def output = currentBuild.rawBuild.logFile.text
+                    if (output.contains('FAILURE')) {
+                        error('test failed')
+                    }
+                }
+            }
+        }
+    }
+}
