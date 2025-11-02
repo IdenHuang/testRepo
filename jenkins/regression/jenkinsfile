@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     def output = sh(
-                        script: "python3 test_orchestrator.py --test-id ${TEST_ID}",
+                        script: "python3 test_orchestrator.py --regression",
                         returnStdout: true
                     ).trim()
                     if (output.contains('failed')) {
