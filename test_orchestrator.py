@@ -40,7 +40,6 @@ def run_test(test_id):
         )
         duration = time.time() - start
         print(f"Test passed  -- {test_id}\nReturn Code: {result.returncode} \nDuration: {round(duration, 2)} seconds")
-        print("SUJCESS\n")
 
         return {
             "id": test_id,
@@ -51,7 +50,6 @@ def run_test(test_id):
         }
     except subprocess.CalledProcessError as e:
         duration = time.time() - start
-        print("FAILURE\n")
         print(f"Test failed -- {test_id}\nReturn Code: 1 \nDuration: {round(duration, 2)} seconds \n {e.stdout}" )
         return {
         "id": test_id,
@@ -85,6 +83,7 @@ def run_all_tests():
         for f in failed:
             print("Test ID "+f["id"]+"\n"+f["error"])
         print("FAILURE")
+        exit(1)
 
 # Runs a test with a given ID
 def run_test_by_id(test_id):
