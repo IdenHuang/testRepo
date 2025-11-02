@@ -2,13 +2,14 @@ pipeline {
     agent any
     parameters {
         string(name: 'TEST_ID', defaultValue: '', description: 'Enter test ID')
-        string(name: 'BRANCH_ID', defaultValue: '', description: 'Enter branch ID')
+        // string(name: 'BRANCH_ID', defaultValue: '', description: 'Enter branch ID')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: '${BRANCH_ID}', url: 'https://github.com/IdenHuang/testRepo.git'
+                // git branch: '${BRANCH_ID}', url: 'https://github.com/IdenHuang/testRepo.git'
+                git url: 'https://github.com/IdenHuang/testRepo.git'
             }
         }
 
