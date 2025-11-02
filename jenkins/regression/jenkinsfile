@@ -23,8 +23,11 @@ pipeline {
         stage('Check console output') {
             steps {
                 script {
-                    def output = currentBuild.rawBuild.logFile.text
-                    if (output.contains('FAILURE')) {
+                    def output = sh(
+                        script: "python3 test_orchestrator.py --test-id ${TEST_ID}",
+                        returnStdout: true
+                    ).trim()
+                    if (output.contains('failed')) {
                         error('test failed')
                     }
                 }
