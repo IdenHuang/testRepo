@@ -10,7 +10,7 @@ pipeline {
             //     git branch: '${BRANCH_ID}', url: 'https://github.com/IdenHuang/testRepo.git'
             // }
             steps {
-                git url: 'https://github.com/IdenHuang/testRepo.git'
+                git url: branch: 'main, 'https://github.com/IdenHuang/testRepo.git'
             }
         }
         stage('Run Test') {
