@@ -4,7 +4,7 @@ pipeline {
     //     string(name: 'BRANCH_ID', defaultValue: '', description: 'Enter branch ID')
     // }
 
-    // stages {
+    stages {
         stage('Checkout') {
             // steps {
             //     git branch: '${BRANCH_ID}', url: 'https://github.com/IdenHuang/testRepo.git'
@@ -30,3 +30,4 @@ pipeline {
             }
         }
     }
+}
