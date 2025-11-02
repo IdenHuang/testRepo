@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // git branch: '${BRANCH_ID}', url: 'https://github.com/IdenHuang/testRepo.git'
-                git url: 'https://github.com/IdenHuang/testRepo.git'
+                git branch: "${env.BRANCH_NAME}",
+                url: 'https://github.com/IdenHuang/testRepo.git'
             }
         }
 
