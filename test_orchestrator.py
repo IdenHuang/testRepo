@@ -40,6 +40,7 @@ def run_test(test_id):
         )
         duration = time.time() - start
         print(f"Test passed  -- {test_id}\nReturn Code: {result.returncode} \nDuration: {round(duration, 2)} seconds")
+        print("SUJCESS\n")
 
         return {
             "id": test_id,
@@ -50,6 +51,7 @@ def run_test(test_id):
         }
     except subprocess.CalledProcessError as e:
         duration = time.time() - start
+        print("FAILURE\n")
         print(f"Test failed -- {test_id}\nReturn Code: 1 \nDuration: {round(duration, 2)} seconds \n {e.stdout}" )
         return {
         "id": test_id,
